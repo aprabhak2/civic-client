@@ -9,7 +9,7 @@ var wiredep = require('wiredep');
 gulp.task('test', function() {
   var bowerDeps = wiredep({
     directory: 'bower_components',
-    exclude: ['bootstrap-sass-official'],
+    exclude: [/bootstrap-sass-official/, /\/bootstrap.js/, /bootstrap.css/, /jquery.js/],
     dependencies: true,
     devDependencies: true
   });
