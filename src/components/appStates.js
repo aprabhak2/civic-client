@@ -92,7 +92,34 @@
         }
       });
 
-    // EVENT VIEWS
+    // USER STATES
+    // states dealing with viewing/editing user profile, reports etc.
+
+    $stateProvider
+      .state('users', {
+        abstract: true,
+        url: '/users',
+        template: '<div ui-view class="userView"></div>'
+      })
+      .state('users.profile', {
+        url: '/profile/:userId',
+        resolve: {
+          Users: 'Users',
+          user: function(Users, $stateParams) {
+            return Users.get({ userId: $stateParams.userId }).$promise;
+          }
+        },
+        controller: function($scope, user) {
+          $scope.userView = {}; $scope.userView.user = user;
+        },
+        template: '<user-profile user="userView.user"></user-profile>',
+        data: {
+          titleExp: '"User Profile"',
+          navMode: 'sub'
+        }
+      });
+
+    // EVENT STATES
     // gene, variant, evidence & associated activity views
     $stateProvider
       .state('events', {
@@ -356,7 +383,10 @@
         controller: function(evidence, $scope) {
           $scope.evidence = evidence;
         }
-      })
+      });
+
+    // ADD ENTITY STATES
+    $stateProvider
       .state('add', {
         url: '/add',
         abstract: true,
@@ -374,8 +404,5 @@
           Evidence: 'Evidence'
         }
       });
-
-
-
   }
 })();
